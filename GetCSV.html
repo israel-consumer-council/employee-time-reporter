@@ -1,0 +1,31 @@
+<!DOCTYPE html5>
+<html>
+	<body>
+
+	<input type="file" id="files" name="files[]" multiple />
+	<div id="content"></div>
+
+	<script>
+	  function handleFileSelect(evt) {
+		var files = evt.target.files; // FileList object
+
+		for (var i = 0, f; f = files[i]; i++) {
+
+		  var reader = new FileReader();
+
+		  // Closure to capture the file information.
+		  reader.onload = (function(theFile) {
+			return function(e) {
+			  document.getElementById('content').innerHTML = reader.result;
+			};
+		  })(f);
+
+		  reader.readAsText(f);
+		}
+	  }
+
+	  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+	</script>
+
+	</body>
+</html> 

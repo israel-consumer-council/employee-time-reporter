@@ -1,31 +1,53 @@
 <!DOCTYPE html5>
 <html>
-	<body>
+  <body>
 
-	<input type="file" id="files" name="files[]" multiple />
-	<div id="content"></div>
+    <input type="file" id="files" name="files[]" multiple />
+    <div id="content"></div>
 
-	<script>
-	  function handleFileSelect(evt) {
-		var files = evt.target.files; // FileList object
+    <script>
+      let myFile;
 
-		for (var i = 0, f; f = files[i]; i++) {
+      function handleFileSelect(evt) {
+        let files = evt.target.files; // FileList object
+          for (let i = 0, f; f = files[i]; i++) {
+            let reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+              return function(e) {
+                myFile = reader.result;
+                processData(myFile);
+              };
+            })(f);
+            reader.readAsText(f);
+          }
+      }
 
-		  var reader = new FileReader();
+      function processData(data) {	
+        let csv_lines = data.split("\n");
+        let objectNames =  csv_lines[0].split(",");
+        let entries = [];
+        let keyIndex = 0;
+        while (keyIndex < objectNames.length) {
+          objectNames[keyIndex] = objectNames[keyIndex].replace(/("| |\r)/g, "");
+          keyIndex++;
+        }       
 
-		  // Closure to capture the file information.
-		  reader.onload = (function(theFile) {
-			return function(e) {
-			  document.getElementById('content').innerHTML = reader.result;
-			};
-		  })(f);
-
-		  reader.readAsText(f);
-		}
-	  }
-
-	  document.getElementById('files').addEventListener('change', handleFileSelect, false);
-	</script>
-
-	</body>
+        for (let lineIndex = 1; lineIndex < csv_lines.length; lineIndex++) {
+          entry = csv_lines[lineIndex].split(",");
+          entries[lineIndex-1] = new Object();
+          for (let fieldIndex = 0; fieldIndex < entry.length; fieldIndex++) {
+            entries[lineIndex-1][objectNames[fieldIndex]] = entry[fieldIndex];
+            if (objectNames[fieldIndex] == "Record")
+              entries[lineIndex-1][objectNames[fieldIndex]] = entries[lineIndex-1][objectNames[fieldIndex]].replace(/("|\r)/g, "");
+            else
+              entries[lineIndex-1][objectNames[fieldIndex]] = entries[lineIndex-1][objectNames[fieldIndex]].replace(/("|\s|\r)/g, "");
+          }			
+          entries.push(entries[lineIndex-1]);
+        }
+        document.getElementById('content').innerHTML = JSON.stringify(entries);
+      }
+      document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    </script>
+  </body>
 </html> 

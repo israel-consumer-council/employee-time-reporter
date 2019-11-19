@@ -4,7 +4,7 @@
 
     <input type="file" id="files" name="files[]" multiple />
     <div id="content"></div>
-    <div id="content1"></div>
+    <table id="myTable" dir="rtl"></table>
 
     <script>
       let myFile;
@@ -37,14 +37,26 @@
           let entry = csv_lines[lineIndex].split(",");
           entries[lineIndex-1] = new Object();
           for (let fieldIndex = 0; fieldIndex < entry.length; fieldIndex++) {
-            let UnformatEntry = entry[fieldIndex];
+            let fieldValue = entry[fieldIndex];
             if (objectNames[fieldIndex] == "Record")
-              entries[lineIndex-1][objectNames[fieldIndex]] = UnformatEntry.replace(/("|\r)/g, "");
+              entries[lineIndex-1][objectNames[fieldIndex]] = fieldValue.replace(/("|\r)/g, "");
             else
-              entries[lineIndex-1][objectNames[fieldIndex]] = UnformatEntry.replace(/("|\s|\r)/g, "");
+              entries[lineIndex-1][objectNames[fieldIndex]] = fieldValue.replace(/("|\s|\r)/g, "");
           }			
         }
-        getRecordData(entries);
+        result = getRecordData(entries);
+        document.getElementById('content').innerHTML = JSON.stringify(result);
+        let table = document.getElementById("myTable");
+
+        for (let i = 0; i < result.length; i++) {
+          let row = table.insertRow(i);
+          let objSize = Object.keys(result[i]).length;
+          for (let j = 0; j < objSize; j++) {
+            let cell = row.insertCell(j);
+            cell.innerHTML = "שלום";
+          }
+        }
+      
       }
       
       function getRecordData(data) {
@@ -55,16 +67,15 @@
             recordObject["ActionType"] = "IN";
           else
             recordObject["ActionType"] = "OUT";
-          recordObject["Date"] = DateFormat(recordArr[1]);
-          recordObject["Time"] = TimeFormat(recordArr[2]);
+          recordObject["Date"] = dateFormat(recordArr[1]);
+          recordObject["Time"] = timeFormat(recordArr[2]);
           recordObject["EmployeeNum"] = parseInt(recordArr[4]);
           data[recordIndex]["Record"] = recordObject;
         }
-        document.getElementById('content').innerHTML = JSON.stringify(data);
-        console.log(data);
+        return data;
       }
       
-      function DateFormat(date) {
+      function dateFormat(date) {
         year = (parseInt(date[0]) * 10 + parseInt(date[1])) + 2000;
         month = parseInt(date[2]) * 10 + parseInt(date[3]);
         if(month < 10)
@@ -72,11 +83,10 @@
         day = parseInt(date[4]) * 10 + parseInt(date[5]);
         if(day < 10)
           day = "0" + day; 
-        FormatedDate = day + "/" + month + "/" + year;
-        return FormatedDate;
+        return day + "/" + month + "/" + year;
       }
       
-      function TimeFormat(time) {
+      function timeFormat(time) {
         hours = parseInt(time[0]) * 10 + parseInt(time[1]);
         if(hours < 10)
           hours = "0" + hours; 
@@ -86,8 +96,7 @@
         seconds = parseInt(time[4]) * 10 + parseInt(time[5]);
         if(seconds < 10)
           seconds = "0" + seconds;
-        FormatedTime = hours + ":" + minutes + ":" + seconds;
-        return FormatedTime;
+        return hours + ":" + minutes + ":" + seconds;
       }
       
       document.getElementById('files').addEventListener('change', handleFileSelect, false);

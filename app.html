@@ -1,105 +1,40 @@
-<!DOCTYPE html5>
+<!DOCTYPE html>
 <html>
-  <body>
-
-    <input type="file" id="files" name="files[]" multiple />
-    <div id="content"></div>
-    <table id="myTable" dir="rtl"></table>
-
-    <script>
-      let myFile;
-
-      function handleFileSelect(evt) {
-        let files = evt.target.files; // FileList object
-          for (let i = 0, f; f = files[i]; i++) {
-            let reader = new FileReader();
-            // Closure to capture the file information.
-            reader.onload = (function(theFile) {
-              return function(e) {
-                myFile = reader.result;
-                processData(myFile);
-              };
-            })(f);
-            reader.readAsText(f);
-          }
-      }
-
-      function processData(data) {	
-        let csv_lines = data.split("\n");
-        let objectNames =  csv_lines[0].split(",");
-        let entries = [];
-        let keyIndex = 0;
-        while (keyIndex < objectNames.length) {
-          objectNames[keyIndex] = objectNames[keyIndex].replace(/("| |\r)/g, "");
-          keyIndex++;
-        }       
-        for (let lineIndex = 1; lineIndex < csv_lines.length; lineIndex++) {
-          let entry = csv_lines[lineIndex].split(",");
-          entries[lineIndex-1] = new Object();
-          for (let fieldIndex = 0; fieldIndex < entry.length; fieldIndex++) {
-            let fieldValue = entry[fieldIndex];
-            if (objectNames[fieldIndex] == "Record")
-              entries[lineIndex-1][objectNames[fieldIndex]] = fieldValue.replace(/("|\r)/g, "");
-            else
-              entries[lineIndex-1][objectNames[fieldIndex]] = fieldValue.replace(/("|\s|\r)/g, "");
-          }			
-        }
-        result = getRecordData(entries);
-        document.getElementById('content').innerHTML = JSON.stringify(result);
-        let table = document.getElementById("myTable");
-
-        for (let i = 0; i < result.length; i++) {
-          let row = table.insertRow(i);
-          let objSize = Object.keys(result[i]).length;
-          for (let j = 0; j < objSize; j++) {
-            let cell = row.insertCell(j);
-            cell.innerHTML = "שלום";
-          }
-        }
-      
-      }
-      
-      function getRecordData(data) {
-        for (let recordIndex = 0; recordIndex < data.length; recordIndex++) {
-          recordObject = [];
-          recordArr = data[recordIndex]["Record"].split(" ");
-          if (recordArr[0] == "0001")
-            recordObject["ActionType"] = "IN";
-          else
-            recordObject["ActionType"] = "OUT";
-          recordObject["Date"] = dateFormat(recordArr[1]);
-          recordObject["Time"] = timeFormat(recordArr[2]);
-          recordObject["EmployeeNum"] = parseInt(recordArr[4]);
-          data[recordIndex]["Record"] = recordObject;
-        }
-        return data;
-      }
-      
-      function dateFormat(date) {
-        year = (parseInt(date[0]) * 10 + parseInt(date[1])) + 2000;
-        month = parseInt(date[2]) * 10 + parseInt(date[3]);
-        if(month < 10)
-          month = "0" + month; 
-        day = parseInt(date[4]) * 10 + parseInt(date[5]);
-        if(day < 10)
-          day = "0" + day; 
-        return day + "/" + month + "/" + year;
-      }
-      
-      function timeFormat(time) {
-        hours = parseInt(time[0]) * 10 + parseInt(time[1]);
-        if(hours < 10)
-          hours = "0" + hours; 
-        minutes = parseInt(time[2]) * 10 + parseInt(time[3]);
-        if(minutes < 10)
-          minutes = "0" + minutes;
-        seconds = parseInt(time[4]) * 10 + parseInt(time[5]);
-        if(seconds < 10)
-          seconds = "0" + seconds;
-        return hours + ":" + minutes + ":" + seconds;
-      }
-      
-      document.getElementById('files').addEventListener('change', handleFileSelect, false);
-    </script>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="external-libaries/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="external-libaries/bootstrap-4.3.1.min.js"></script>
+    <script type="text/javascript" src="external-libaries/popper-1.14.7.min.js"></script>
+    <link rel="stylesheet" href="external-libaries/bootstrap-4.3.1.min.css"/>
+    <script type="text/javascript" src="const.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </head>
+  <body dir="rtl">
+    <div class="container">
+      <div class="row">
+        <input type="file" id="files" name="files[]" multiple />
+      </div>
+      <div class="row">
+        <form id="getReport">
+          <div class="form-row align-items-end">
+            <div class="col-auto">
+              <label for="inputMonth">חודש:</label>
+              <input type="month" class="form-control" id="inputMonth" placeholder="הכנס חודש" dir="rtl"/>
+            </div>
+            <div class="col-auto">
+              <label for="inputBadgeNumber">מספר תג:</label>
+              <input type="text" class="form-control" id="inputBadgeNumber" dir="rtl"/>
+            </div>
+            <div class="col">
+              <button id="submitBtn" type="submit" class="btn btn-primary">בצע</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="row">
+        <div id="myTable"></div>
+      </div>
+    </div>
   </body>
 </html> 

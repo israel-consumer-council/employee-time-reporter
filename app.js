@@ -1,32 +1,37 @@
 (function() {
     
-  let myFile;
+  let csvDataFile;
   let usersRecords;
   
-  function handleFileSelect(evt) { // Read file from user
-    let files = evt.target.files;
+  // Read file from user
+  function handleFileSelect(event) { 
+    let files = event.target.files;
       for (let i = 0, f; f = files[i]; i++) {
         let reader = new FileReader();
-        reader.onload = (function(theFile) {
+        reader.onload = (function() {
           return function(e) {
-            setTimeout(enableInputs, 3000); // Timeout to disable click while loading file 
+            // Timeout to disable click while loading file 
+            setTimeout(enableInputs, 3000); 
             $('#loadingSpinner').css("visibility", "hidden");
-            myFile = reader.result;
-            processData(myFile); // process the loaded file
+            csvDataFile = reader.result;
+            // process the loaded file
+            processData(csvDataFile); 
           };
         })(f);
         reader.readAsText(f);
       }
   }
 
+  // Enable inputs after loading the file
   function enableInputs(){
     $('#files').prop('disabled', false);
     $('#inputMonth').prop('disabled', false);
     $('#inputBadgeNumber').prop('disabled', false);
     $('#submitBtn').prop('disabled', false);
   }
-
-  function processData(data) {	// Process the CSV file to Array of objects of all entries
+  
+  // Process the CSV file to Array of objects of all entries
+  function processData(data) {	
     let csv_lines = data.split("\n");
     let objectNames =  csv_lines[0].split(",");
     let entries = [];
@@ -47,7 +52,8 @@
     usersRecords = sortRecords(records);
   }
   
-  function getRecordData(data) { // Format the dates and times to user readable
+  // Format the dates and times to make it user readable
+  function getRecordData(data) { 
     let records = [];
     let i = 0;
     for (let recordIndex = 0; recordIndex < data.length; recordIndex++) {
@@ -67,32 +73,36 @@
     return records;
   }
 
-  function sortRecords(records) { // Sort the records according to Date, Time and UserId
+
+  // Sort the records according to Date, Time and UserId
+  function sortRecords(records) { 
     fields = ["Date", "Time", "UserId"];
-    let myRecords = records.sort(dynamicSort(fields));
+    let myRecords = records.sort(sortWithinSort(fields));
     return myRecords;
   }
 
-  function dynamicSort(fields) {  // Sorting function
+  // Sort an array by a property, the second sort is within the sorted array
+  // For example sorting by Dates, the dates are sorted and then for each group of the same dates sort the hours in the certain date.
+  function sortWithinSort(fields) {  
     return function (a,b) {
-      if ( a[fields[0]] < b[fields[0]] ){
+      if(a[fields[0]] < b[fields[0]]) {
         return -1;
       }
-      else if ( a[fields[0]] > b[fields[0]] ){
+      else if(a[fields[0]] > b[fields[0]]) {
         return 1;
       }
       else {
-        if ( a[fields[2]] < b[fields[2]] ){
+        if(a[fields[2]] < b[fields[2]]) {
           return -1;
         }
-        else if ( a[fields[2]] > b[fields[2]] ){
+        else if(a[fields[2]] > b[fields[2]]) {
           return 1;
         }
         else {
-          if ( a[fields[1]] < b[fields[1]] ){
+          if(a[fields[1]] < b[fields[1]]) {
             return -1;
           }
-          else if ( a[fields[1]] > b[fields[1]] ){
+          else if(a[fields[1]] > b[fields[1]]) {
             return 1;
           }
           return 0;
@@ -101,7 +111,8 @@
     }
   }
   
-  function getInfo(month, badgeNum) { // Get user information according to given month and badge number 
+  // Get user information according to given month and badge number 
+  function getInfo(month, badgeNum) { 
     let myRecords = [];
     let myRecordsIndex = 0;
     for (let recordIndex = 0; recordIndex < usersRecords.length; recordIndex++) {
@@ -128,7 +139,8 @@
       alert("לא קיים!");
   }
   
-  function dateFormat(serialNum) { // Format the date from a serial number to a string that allows creating Date objects
+  // Format the date from a serial number to a string that allows creating Date objects
+  function dateFormat(serialNum) { 
     const date = new Date(Math.round((serialNum - 25569)*86400*1000));
     let day = date.getDate();
     let month = date.getMonth() + 1;
@@ -140,7 +152,8 @@
     return year + "-" + month + "-" + day;
   }
 
-  function totalCalc(total, single, isSubTime){ // A "++" function for strings - adds the current number to the sum of numbers
+  // A "++" function for strings - adds the current number to the sum of numbers
+  function totalCalc(total, single, isSubTime){ 
     if(isSubTime) {
       if(total == 0)
         return timeConvert(addZeroes(single));
@@ -155,7 +168,8 @@
     }
   }
   
-  function getBreakObj(currentBreak, nextDate){ // Arrange breaks in objects to ditnigwish between them for calculations
+  // Arrange breaks in objects to ditnigwish between them for calculations
+  function getBreakObj(currentBreak, nextDate){ 
     let breakObj = new Object();
     if(currentBreak <= 0.15) {
       breakObj = {
@@ -180,7 +194,8 @@
     return breakObj;
   }
   
-  function calcBreaks(sumBreaks, sumOfBreaks){ // Calculate the sum of all breaks in a certain day
+  // Calculate the sum of all breaks in a certain day
+  function calcBreaks(sumBreaks, sumOfBreaks){ 
     let largestBreak = Math.max.apply(Math, sumBreaks.map(function(o) { return o.currBreak; }));
     for (let i = 0; i < sumBreaks.length; i++) {
       let currentBreakNum = parseFloat(sumBreaks[i].currBreak);
@@ -195,11 +210,13 @@
     return sumOfBreaks;
   }
   
-  function calcTime(sumHours, standard, totalAddTime, totalLackTime){ // Calculate the Added of Lacked hours in the report
+  // Calculate the Added of Lacked hours in the report
+  function calcTime(sumHours, standard, totalAddTime, totalLackTime){ 
     let sumHoursNum = parseFloat(sumHours.replace(':', '.'));
     let standardNum = parseFloat(standard.replace(':', '.'));
     let dateNext, dateCurr, normal, addTimeNum = "", lackTimeNum = "";
-    if(sumHoursNum >= standardNum) { // if the sum of working hours is greater then the needed hours to work
+    // if the sum of working hours is greater then the needed hours to work
+    if(sumHoursNum >= standardNum) { 
       normal = standard;
       dateNext = new Date('1970-01-01 ' + sumHours);
       dateCurr = new Date('1970-01-01 ' + standard);
@@ -218,7 +235,8 @@
     return [normal, totalAddTime, addTimeNum, totalLackTime, lackTimeNum];
   }
   
-  function createTable(myRecords) {  // Create the report table to show to the user
+  // Create the report table to show to the user
+  function createTable(myRecords) {  
     let table = $('<table class="table text-right"></table>') // ראשי הטבלה
     let MyCols = 6;
 		let headers = ["תאריך", "יום", "הסכם", "כניסה", "יציאה", "סה\"כ", "תקן", "הפסקה מאושרת", "חוסר", "רגילות", "שעות עודפות", "שגיאה", "הערה יומית", "מאושר לחישוב עם הפסקות"];
@@ -244,7 +262,8 @@
     let sumHours = 0; // סה"כ שעות העבודה
     let sumBreaks = []; // סה"כ זמן הפסקות 
     let isError = false; // Was there an error in a certain day in the report 
-    let standard = getTodayStandard(myRecords[0]["AgreementID"], new Date(myRecords[0]["Date"])); // Get number of hours needed to work of the current day
+    // Get number of hours needed to work of the current day
+    let standard = getTodayStandard(myRecords[0]["AgreementID"], new Date(myRecords[0]["Date"])); 
     for (let record = 0; record < myRecords.length; record += 2) {
       let row = $('<tr></tr>');
       let currentDate = new Date(myRecords[record]["Date"] + ' ' + myRecords[record]["Time"]); // התאריך הנוכחי
@@ -262,7 +281,8 @@
       let colAgr = $('<td scope="col">' + agreementID + '</td>'); // Show agreement ID
       row.append(colAgr);
       let colEntry;
-      if(myRecords[record]["Type"] == 0) { // Check if current record object is an entry type (0 - Entry)
+      // Check if current record object is an entry type (0 - Entry)
+      if(myRecords[record]["Type"] == 0) { 
         colEntry = $('<td scope="col">' + myRecords[record]["Time"] + '</td>');
       }
       else {
@@ -270,7 +290,8 @@
         isError = true;
       }
       row.append(colEntry);
-      if(nextDate == null || (currentDate.getDate() != nextDate.getDate())) { // check if dates are equal
+      // check if dates are equal
+      if(nextDate == null || (currentDate.getDate() != nextDate.getDate())) { 
         standard = getTodayStandard(agreementID, currentDate);
         let colExit;
         if(myRecords[record]["Type"] == 1) {
@@ -285,7 +306,8 @@
         table = errorRes[2];
         sumHours = errorRes[3];
         sumBreaks = errorRes[4];
-        totalStandard = totalCalc(totalStandard, standard, false); // Calculate the number of hours needed to work this month
+        // Calculate the number of hours needed to work this month
+        totalStandard = totalCalc(totalStandard, standard, false); 
       }
       else {
         let colExit;
@@ -309,7 +331,8 @@
           sumBreaks = errorRes[4];
           continue;
         }
-        let currentSum = subTime(currentDate, nextDate); // Sum the working time between two record objects
+        // Sum the working time between two record objects
+        let currentSum = subTime(currentDate, nextDate); 
         // "++" function to add the current working hours to the sum of all working hours of the current day
         sumHours = totalCalc(sumHours, currentSum, true); 
         // If the next date and the date after it are the same calculate the break between them
@@ -324,7 +347,8 @@
           table.append(row);
         }
         else {
-          if(isError) { // if there is an error in the current batch of the current date show an error
+          // if there is an error in the current batch of the current date show an error
+          if(isError) { 
             let errorRes = tableErrorRow(true, false, headers.length, standard, row, record, totalErrors, table, sumHours, sumBreaks);
             record = errorRes[0];
             totalErrors = errorRes[1];
@@ -333,20 +357,26 @@
             sumBreaks = errorRes[4];
             isError = false;
           }
-          else { // Else sum regulary
+          // Else sum regulary
+          else { 
             let sumOfBreaks = "0:00";
             totalDaysAtWork++;    
-            sumOfBreaks = calcBreaks(sumBreaks, sumOfBreaks); // Calculate the sum of all breaks in the current date
-            totalBreaks = totalCalc(totalBreaks, sumOfBreaks, false); // Calculate the sum of all the breaks in the month
+            // Calculate the sum of all breaks in the current date
+            sumOfBreaks = calcBreaks(sumBreaks, sumOfBreaks); 
+            // Calculate the sum of all the breaks in the month
+            totalBreaks = totalCalc(totalBreaks, sumOfBreaks, false); 
             let resArr = calcTime(sumHours, standard, totalAddTime, totalLackTime);
             normal = resArr[0];
             totalAddTime = resArr[1];
             let addTimeNum = resArr[2];
             totalLackTime = resArr[3];
             let lackTimeNum = resArr[4];
-            totalNormal = totalCalc(totalNormal, normal, false); // Calculate the sum of all the normal in the month
-            let totalHours = sumTime(sumHours, sumOfBreaks); // Calculate the sum of all the working hours in the current date
-            totalHoursAtWork = totalCalc(totalHoursAtWork, sumHours, false); // Calculate the sum of all the working hours in the month
+            // Calculate the sum of all the normal in the month
+            totalNormal = totalCalc(totalNormal, normal, false); 
+            // Calculate the sum of all the working hours in the current date
+            let totalHours = sumTime(sumHours, sumOfBreaks); 
+            // Calculate the sum of all the working hours in the month
+            totalHoursAtWork = totalCalc(totalHoursAtWork, sumHours, false); 
             // Calculate the sum of all the working hours and breaks in the month
             totalHoursAtWorkWithBreaks = totalCalc(totalHoursAtWorkWithBreaks, totalHours, false);
             for (let i = 5; i < headers.length; i++) {
@@ -387,7 +417,8 @@
             sumBreaks = [];
             table.append(row);
           }
-          totalStandard = totalCalc(totalStandard, standard, false); // Calculate the number of hours needed to work this month
+          // Calculate the number of hours needed to work this month
+          totalStandard = totalCalc(totalStandard, standard, false); 
         }
       } 
 		}
@@ -456,6 +487,7 @@
     reportSummary(generalInfo, paymentInfo);
   }
   
+  // SHow an error line in the table if somthing is wrong
   function tableErrorRow(errorRow, errorBit, length, standard, row, record, totalErrors, table, sumHours, sumBreaks) {
     if(errorRow) {
       for (let i = 5; i < length; i++) {
@@ -479,7 +511,8 @@
     return [record, totalErrors, table, sumHours, sumBreaks];
   }
   
-  function reportSummary(generalInfo, paymentInfo) { // The report summary of the report
+  // The summary of the report
+  function reportSummary(generalInfo, paymentInfo) { 
     let table = $('<table class="table text-right"></table>') // ראשי הטבלה
     let MyCols = 6;
 		let headers = ["נתונים כללים", "שעות לתשלום", "אירועים", "ימים", "שעות"];
@@ -516,7 +549,8 @@
     $('#generalReportTable').append(table);  
   }
   
-  function dateConvert(date) { // Chnage date for showing to user
+  // Change date for showing to user
+  function dateConvert(date) { 
     let dateArr = date.split('-');
     return dateArr[2] + "/" + dateArr[1] + "/" + dateArr[0];
   }
@@ -525,7 +559,8 @@
     return addTimeNum = timeNum.replace('.', ':');
   }
 
-  function addZeroes(num) { // Change number to have two digits after the "." and return a string representation of it
+  // Change number to have two digits after the "." and return a string representation of it
+  function addZeroes(num) { 
     let stringNum = String(num);
     let res = stringNum.split(".");     
     if(res.length == 1 || res[1].length < 3) {
@@ -537,7 +572,8 @@
     }   
   }
 
-  function subTime(currentDate, nextDate) { // A sub function between two Date objects
+  // A sub function between two Date objects
+  function subTime(currentDate, nextDate) { 
     let hours = Math.floor(Math.abs(nextDate - currentDate) / (60*60*1000));
     let minutes = Math.floor(Math.abs(nextDate - currentDate) % (60*60*1000) /60000);
     if(minutes < 10)
@@ -547,7 +583,8 @@
     return timeNum;
   }
   
-  function sumTime(time1, time2) { // A "++" function for time strings
+  // A "++" function for time strings
+  function sumTime(time1, time2) { 
     let timeArr1 = time1.split(':');
     let timeArr2 = time2.split(':');
     let hoursTotal = parseInt(timeArr1[0]) + parseInt(timeArr2[0]);
@@ -562,20 +599,142 @@
       minutesTotal = "0" + minutesTotal;
     return hoursTotal + ":" + minutesTotal;
   }
+
+  // Get how much hours a worker needs to work in a certain date
+  function getTodayStandard(agreementID, currentDate) {
+    let standardObj = getStandard(agreementID);
+    let standardArr = standardObj.standard;
+    let holidayName = getHoliday(currentDate);
+    if(holidayName != "") {
+      for (let [key, value] of Object.entries(standardArr)) {
+        if(key == holidayName)
+          return value;
+      }
+      return "";
+    }
+    if((0 <= currentDate.getDay()) && (currentDate.getDay() <= 3))
+      return minutesToTime(getValueByProperty(standardArr, "normal"));
+    else if(currentDate.getDay() == 4)
+      return minutesToTime(getValueByProperty(standardArr, "day5"));
+    else
+      return "";
+  }
+
+  // Check if there is an holiday in the current date
+  function getHoliday(currentDate) {
+    for(let i = 0; i < holidays.length; i++) {
+      for(let j = 0; j < holidays[i].dates.length; j++) {
+        let startDate = new Date(holidays[i].dates[j].start);
+        let endDate = new Date(holidays[i].dates[j].end);
+        if((startDate <= currentDate) && (currentDate <= endDate)) {
+          return holidays[i].holidayName;
+        }
+      }
+    }
+    return "";
+  }
+
+  // Get the name of the day for showing in the report
+  function getDayName(currentDate) {
+    let day = currentDate.getDay();
+    let daysArr = ['א','ב','ג','ד','ה'];
+    return daysArr[day];
+  }
+
+  // Get row names for the summary report
+  function getGeneralDataNames(){
+    return ["ימי נוכחות", "ימי תקן", "שעות נוכחות", "שעות תקן", "שעות חוסר", "הפסקה", "מספר הפסקות", "שגיאות"];
+  }
+
+  // Get the number of days a certain worker needs to work in a certain month
+  function getNeededDaysAtWork(agreementID, dateStr){
+    let tmpStrDate = new Date(dateStr);
+    let month = tmpStrDate.getMonth();
+    let year = tmpStrDate.getFullYear();
+    let currentDate = new Date(year, month, 1);
+    let numOfdays = 0;
+    while(currentDate.getMonth() === month) {
+      let tmpDate = new Date(currentDate);
+      if(getTodayStandard(agreementID, tmpDate) != "")
+        numOfdays++;
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return numOfdays;
+  }  
+    
+  // Get the monthly remark
+  function getMonthlyRemark(){
+    return "";
+  }
+
+  // Get the start hour that allows a long break after it
+  function getLongBreakStart() {
+    return 6;
+  }
   
+  // Get the end hour that don't allows a long break after it
+  function getLongBreakEnd() {
+    return 17;
+  }
+  
+  // Get an object value by it is key
+  function getValueByProperty(arr, property) {
+    let res = arr.find(element => Object.keys(element) == property); 
+    return Object.values(res)[0];
+  }
+
+  // Get object according to the value
+  function getObjByValue(arr, property, value) {
+    return arr.find(element => element[property] == value); 
+  }
+
+  // Get the standard working hours of a certain agreement
+  function getStandard(agreementID) {
+    return getObjByValue(agreements, "agreementID", agreementID);
+  }
+
+  // Get user information according to a badge number
+  function getUserInfo(badgeNum) {
+    return getObjByValue(users, "Badge", badgeNum);
+  }
+
+  // Convert minutes it to time (HH:MM)
+  function minutesToTime(totalMinutes) {
+    let hours = Math.floor(totalMinutes / 60);          
+    let minutes = totalMinutes % 60;
+    if(hours < 10)
+      hours = "0" + hours;
+    if(minutes < 10)
+      minutes = "0" + minutes;
+    return hours + ":" + minutes;
+  }  
+
+  // Reformat a time object to show properly
+  function timeFormat(timeStr) {
+    let timeArr = timeStr.split(':');
+    let hours = timeArr[0];          
+    let minutes = timeArr[1];
+    if(Number(hours) < 10 && hours.length == 1)
+      hours = "0" + hours;
+    if(Number(minutes) < 10 && minutes.length == 1)
+      minutes = "0" + minutes;
+    return hours + ":" + minutes;
+  }
+
   $("document").ready(function() {
     $('#inputMonth').prop('disabled', true);
     $('#inputBadgeNumber').prop('disabled', true);
     $('#submitBtn').prop('disabled', true);
     $('#loadingSpinner').css("visibility", "hidden");
-    
-    $(document).on("change", "#files", function(evt){ // Load file button - show spinner on load
+    // Load file button - show spinner on load
+    $(document).on("change", "#files", function(event){ 
       $('#files').prop('disabled', true);
-			handleFileSelect(evt);
+			handleFileSelect(event);
       $('#loadingSpinner').css("visibility", "visible");
 		});
-    $(document).on("submit", "#getReport", function(evt){ // Submit button - delete existing table and show new table according to given info
-      evt.preventDefault();
+    // Submit button - delete existing table and show new table according to given info
+    $(document).on("submit", "#getReport", function(event){ 
+      event.preventDefault();
       if($("#monthlyReportTable").is(':empty') == false) {
         $("#monthlyReportTable").empty();
       }

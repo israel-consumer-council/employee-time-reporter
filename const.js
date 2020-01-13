@@ -1,38 +1,288 @@
+const holidays = [{
+        "id": 5,
+        "holidayName": "HolHamoed", 
+        "dates": [{
+            "start": "2020-04-10", // חול המועד פסח
+            "end": "2020-04-13"
+          }, {
+            "start": "2020-10-04", // חול המועד סוכות
+            "end": "2020-10-08"
+          }, {
+            "start": "2021-03-29", // חול המועד פסח
+            "end": "2021-04-01"
+          }, {
+            "start": "2021-09-22", // חול המועד סוכות
+            "end": "2021-09-26"
+          }, {
+            "start": "2022-03-17", // חול המועד פסח
+            "end": "2022-03-20"
+          }, {
+            "start": "2022-10-11", // חול המועד סוכות
+            "end": "2022-10-15"
+        }]
+    }, {
+        "id": 6,
+        "holidayName": "Bhirot",
+        "dates": [{
+            "start": "2020-03-02",
+            "end": "2020-03-02"
+        }]
+    }, {
+        "id": 7,
+        "holidayName": "YomHaatzmaut",
+        "dates": [{
+            "start": "2020-04-29",
+            "end": "2020-04-29"
+          }, {
+            "start": "2021-04-15",
+            "end": "2021-04-15"
+          }, {
+            "start": "2022-05-05",
+            "end": "2022-05-05"
+        }]
+    }, {
+        "id": 8,
+        "holidayName": "Pesah",
+        "dates": [{
+            "start": "2020-04-08", // חג ראשון
+            "end": "2020-04-09"
+          }, {
+            "start": "2020-04-14", // חג שני
+            "end": "2020-04-15"
+          }, {
+            "start": "2021-03-27", // חג ראשון
+            "end": "2021-03-28"
+          }, {
+            "start": "2021-04-02", // חג שני
+            "end": "2021-04-03"
+          }, {
+            "start": "2022-04-15", // חג ראשון
+            "end": "2022-04-16"
+          }, {
+            "start": "2022-04-21", // חג שני
+            "end": "2022-04-22"
+        }]
+    }, {
+        "id": 9,
+        "holidayName": "YomHazikaron",
+        "dates": [{
+            "start": "2020-04-28",
+            "end": "2020-04-28"
+          }, {
+            "start": "2021-04-14",
+            "end": "2021-04-14"
+          }, {
+            "start": "2022-05-04",
+            "end": "2022-05-04"
+        }]
+    }, {
+        "id": 10,
+        "holidayName": "Shavuot",
+        "dates": [{
+            "start": "2020-05-29",
+            "end": "2020-05-29"
+          }, {
+            "start": "2021-05-17",
+            "end": "2021-05-17"
+          }, {
+            "start": "2022-06-05",
+            "end": "2022-06-05"
+        }]
+    }, {
+        "id": 11,
+        "holidayName": "ErevShavuot",
+        "dates": [{
+            "start": "2020-05-28",
+            "end": "2020-05-28"
+          }, {
+            "start": "2021-05-16",
+            "end": "2021-05-16"
+          }, {
+            "start": "2022-06-04",
+            "end": "2022-06-04"
+        }]
+    }, {
+        "id": 12,
+        "holidayName": "Gibush",
+        "dates": []
+     }, {
+        "id": 13,
+        "holidayName": "RoshHashana",
+        "dates": [{
+            "start": "2020-09-19",
+            "end": "2020-09-20"
+          }, {
+            "start": "2021-09-07",
+            "end": "2021-09-08"
+          }, {
+            "start": "2022-09-26",
+            "end": "2022-09-27"
+        }]
+    }, {
+        "id": 14,
+        "holidayName": "Sukot",
+        "dates": [{
+            "start": "2020-10-02", // חג ראשון
+            "end": "2020-10-03"
+          }, {
+            "start": "2021-09-20", // חג ראשון
+            "end": "2021-09-21"
+          }, {
+            "start": "2022-10-09", // חג ראשון
+            "end": "2022-10-10"
+        }]
+    }, {
+        "id": 15,
+        "holidayName": "Purim",
+        "dates": [{
+            "start": "2020-03-10",
+            "end": "2020-03-11"
+          }, {
+            "start": "2021-02-26",
+            "end": "2021-02-27"
+          }, {
+            "start": "2022-03-17",
+            "end": "2022-03-18"
+        }]
+    }, {
+        "id": 16,
+        "holidayName": "ErevKipur",
+        "dates": [{
+            "start": "2020-09-27",
+            "end": "2020-09-27"
+          }, {
+            "start": "2021-09-15",
+            "end": "2021-09-15"
+          }, {
+            "start": "2022-10-04",
+            "end": "2022-10-04"
+        }]
+    }, {
+        "id": 17,
+        "holidayName": "Kipur",
+        "dates": [{
+            "start": "2020-09-28",
+            "end": "2020-09-28"
+          }, {
+            "start": "2021-09-16",
+            "end": "2021-09-16"
+          }, {
+            "start": "2022-10-05",
+            "end": "2022-10-05"
+        }]
+    }, {
+        "id": 18,
+        "holidayName": "ErevRoshHashana",
+        "dates": [{
+            "start": "2020-09-18",
+            "end": "2020-09-18"
+          }, {
+            "start": "2021-09-06",
+            "end": "2021-09-06"
+          }, {
+            "start": "2022-09-25",
+            "end": "2022-09-25"
+        }]
+    }, {
+        "id": 19,
+        "holidayName": "SimhatTora",
+        "dates": [{
+            "start": "2020-10-09", // חג שני
+            "end": "2020-10-10"
+          }, {
+            "start": "2021-09-27", // חג שני
+            "end": "2021-09-28"
+          }, {
+            "start": "2022-10-16", // חג שני
+            "end": "2022-10-17"
+        }]
+    }, {
+        "id": 20,
+        "holidayName": "Hanuka",
+        "dates": [{
+            "start": "2020-12-11", 
+            "end": "2020-12-18"
+          }, {
+            "start": "2021-11-29", 
+            "end": "2021-12-06"
+          }, {
+            "start": "2022-12-19", 
+            "end": "2022-12-26"
+        }]
+    }, {
+        "id": 21,
+        "holidayName": "August",
+        "dates": [{
+            "start": "2020-08-01",
+            "end": "2020-08-31"
+          }, {
+            "start": "2021-08-01",
+            "end": "2021-08-31"
+          }, {
+            "start": "2022-08-01",
+            "end": "2022-08-31"
+        }]
+    }
+];
 
-function getLongBreakStart() {
-    return 6;
-}
+const agreements = [{
+        "agreementID": 4,
+        "standard": [{
+            "normal": 480
+          }, {
+            "day5": 480
+          }, {
+            "Purim": 420
+          }, {
+            "Hanuka": 360
+        }] 
+    }, {
+        "agreementID": 6,
+        "standard": [{
+            "normal": 510
+          }, {
+            "day5": 480
+          }, {
+            "YomHazikaron": 330
+          }, {
+            "Purim": 420
+          }, {
+            "Hanuka": 390
+        }]
+    }, {
+        "agreementID": 12,
+        "standard": [{
+            "normal": 450
+          }, {
+            "day5": 450
+          }, {
+            "YomHazikaron": 330
+          }, {
+            "Purim": 420
+          }, {
+            "Hanuka": 330
+        }]
+    }, {
+        "agreementID": 16,
+        "standard": [{
+            "normal": 510
+          }, {
+            "day5": 480
+          }, {
+            "YomHazikaron": 330
+          }, {
+            "Purim": 420
+          }, {
+            "Hanuka": 390
+          }, {
+            "August": 450
+        }]
+    }
+];
 
-function getLongBreakEnd() {
-    return 17;
-}
-
-function getStandard(employeeNum, date) {
-    return 8.0;
-}
-
-function getUserInfo(badgeNum) {
-    return users.find(element => element.Badge == badgeNum);
-}
 const users = [{
-        "UserId": 1,
-        "Badge": "5000",
-        "AgreementID": 1
-    }, {
-        "UserId": 2,
-        "Badge": "2",
-        "AgreementID": 0
-    }, {
         "UserId": 3,
         "Badge": "2",
-        "AgreementID": 6
-    }, {
-        "UserId": 4,
-        "Badge": "9",
-        "AgreementID": 0
-    }, {
-        "UserId": 5,
-        "Badge": "305",
         "AgreementID": 6
     }, {
         "UserId": 6,
@@ -50,10 +300,6 @@ const users = [{
         "UserId": 9,
         "Badge": "127",
         "AgreementID": 16
-    }, {
-        "UserId": 10,
-        "Badge": "126",
-        "AgreementID": 1
     }, {
         "UserId": 11,
         "Badge": "301",
@@ -74,10 +320,6 @@ const users = [{
         "UserId": 15,
         "Badge": "130",
         "AgreementID": 6
-    }, {
-        "UserId": 16,
-        "Badge": "129",
-        "AgreementID": 3
     }, {
         "UserId": 17,
         "Badge": "134",
@@ -179,10 +421,6 @@ const users = [{
         "Badge": "90",
         "AgreementID": 6
     }, {
-        "UserId": 42,
-        "Badge": "4",
-        "AgreementID": 1
-    }, {
         "UserId": 43,
         "Badge": "201",
         "AgreementID": 6
@@ -195,14 +433,6 @@ const users = [{
         "Badge": "307",
         "AgreementID": 16
     }, {
-        "UserId": 46,
-        "Badge": "40",
-        "AgreementID": 0
-    }, {
-        "UserId": 47,
-        "Badge": "587",
-        "AgreementID": 0
-    }, {
         "UserId": 48,
         "Badge": "321",
         "AgreementID": 6
@@ -210,14 +440,6 @@ const users = [{
         "UserId": 49,
         "Badge": "324",
         "AgreementID": 6
-    }, {
-        "UserId": 50,
-        "Badge": "323",
-        "AgreementID": 3
-    }, {
-        "UserId": 51,
-        "Badge": "350",
-        "AgreementID": 13
     }, {
         "UserId": 52,
         "Badge": "349",
@@ -242,10 +464,6 @@ const users = [{
         "UserId": 57,
         "Badge": "341",
         "AgreementID": 6
-    }, {
-        "UserId": 58,
-        "Badge": "93",
-        "AgreementID": 1
     }, {
         "UserId": 59,
         "Badge": "79",
@@ -287,17 +505,9 @@ const users = [{
         "Badge": "323",
         "AgreementID": 6
     }, {
-        "UserId": 69,
-        "Badge": "347999",
-        "AgreementID": 0
-    }, {
         "UserId": 70,
         "Badge": "9",
         "AgreementID": 6
-    }, {
-        "UserId": 71,
-        "Badge": "370",
-        "AgreementID": 0
     }, {
         "UserId": 72,
         "Badge": "370",
@@ -383,65 +593,21 @@ const users = [{
         "Badge": "402",
         "AgreementID": 6
     }, {
-        "UserId": 93,
-        "Badge": "406",
-        "AgreementID": 3
-    }, {
-        "UserId": 94,
-        "Badge": "405",
-        "AgreementID": 3
-    }, {
         "UserId": 95,
         "Badge": "407",
         "AgreementID": 6
-    }, {
-        "UserId": 96,
-        "Badge": "931",
-        "AgreementID": 0
     }, {
         "UserId": 97,
         "Badge": "470",
         "AgreementID": 6
     }, {
-        "UserId": 98,
-        "Badge": "981",
-        "AgreementID": 0
-    }, {
-        "UserId": 99,
-        "Badge": "40",
-        "AgreementID": 0
-    }, {
         "UserId": 100,
         "Badge": "417",
         "AgreementID": 6
     }, {
-        "UserId": 101,
-        "Badge": "40",
-        "AgreementID": 0
-    }, {
         "UserId": 102,
         "Badge": "418",
         "AgreementID": 6
-    }, {
-        "UserId": 103,
-        "Badge": "605",
-        "AgreementID": 0
-    }, {
-        "UserId": 104,
-        "Badge": "642",
-        "AgreementID": 0
-    }, {
-        "UserId": 105,
-        "Badge": "931",
-        "AgreementID": 0
-    }, {
-        "UserId": 106,
-        "Badge": "40",
-        "AgreementID": 0
-    }, {
-        "UserId": 107,
-        "Badge": "291",
-        "AgreementID": 0
     }, {
         "UserId": 108,
         "Badge": "421",
@@ -454,10 +620,6 @@ const users = [{
         "UserId": 110,
         "Badge": "422",
         "AgreementID": 6
-    }, {
-        "UserId": 111,
-        "Badge": "291",
-        "AgreementID": 3
     }, {
         "UserId": 112,
         "Badge": "426",
@@ -483,33 +645,9 @@ const users = [{
         "Badge": "432",
         "AgreementID": 4
     }, {
-        "UserId": 118,
-        "Badge": "40",
-        "AgreementID": 0
-    }, {
-        "UserId": 119,
-        "Badge": "40",
-        "AgreementID": 0
-    }, {
-        "UserId": 120,
-        "Badge": "66",
-        "AgreementID": 0
-    }, {
-        "UserId": 121,
-        "Badge": "339",
-        "AgreementID": 0
-    }, {
         "UserId": 122,
         "Badge": "434",
         "AgreementID": 6
-    }, {
-        "UserId": 123,
-        "Badge": "339",
-        "AgreementID": 0
-    }, {
-        "UserId": 124,
-        "Badge": "121",
-        "AgreementID": 0
     }, {
         "UserId": 125,
         "Badge": "441",
@@ -518,10 +656,6 @@ const users = [{
         "UserId": 126,
         "Badge": "442",
         "AgreementID": 6
-    }, {
-        "UserId": 127,
-        "Badge": "339",
-        "AgreementID": 0
     }, {
         "UserId": 128,
         "Badge": "443",
@@ -543,10 +677,6 @@ const users = [{
         "Badge": "447",
         "AgreementID": 6
     }, {
-        "UserId": 133,
-        "Badge": "406",
-        "AgreementID": 0
-    }, {
         "UserId": 134,
         "Badge": "448",
         "AgreementID": 16
@@ -567,14 +697,6 @@ const users = [{
         "Badge": "451",
         "AgreementID": 16
     }, {
-        "UserId": 139,
-        "Badge": "507",
-        "AgreementID": 0
-    }, {
-        "UserId": 140,
-        "Badge": "507",
-        "AgreementID": 0
-    }, {
         "UserId": 141,
         "Badge": "458",
         "AgreementID": 4
@@ -586,14 +708,6 @@ const users = [{
         "UserId": 143,
         "Badge": "459",
         "AgreementID": 16
-    }, {
-        "UserId": 144,
-        "Badge": "792",
-        "AgreementID": 0
-    }, {
-        "UserId": 145,
-        "Badge": "507",
-        "AgreementID": 0
     }, {
         "UserId": 146,
         "Badge": "551",
@@ -611,14 +725,6 @@ const users = [{
         "Badge": "554",
         "AgreementID": 16
     }, {
-        "UserId": 150,
-        "Badge": "442",
-        "AgreementID": 0
-    }, {
-        "UserId": 151,
-        "Badge": "449",
-        "AgreementID": 0
-    }, {
         "UserId": 152,
         "Badge": "515",
         "AgreementID": 6
@@ -630,10 +736,6 @@ const users = [{
         "UserId": 154,
         "Badge": "556",
         "AgreementID": 4
-    }, {
-        "UserId": 155,
-        "Badge": "557",
-        "AgreementID": 15
     }, {
         "UserId": 156,
         "Badge": "558",
@@ -655,10 +757,6 @@ const users = [{
         "Badge": "563",
         "AgreementID": 16
     }, {
-        "UserId": 161,
-        "Badge": "990",
-        "AgreementID": 0
-    }, {
         "UserId": 162,
         "Badge": "568",
         "AgreementID": 16
@@ -670,10 +768,6 @@ const users = [{
         "UserId": 164,
         "Badge": "567",
         "AgreementID": 16
-    }, {
-        "UserId": 165,
-        "Badge": "563",
-        "AgreementID": 0
     }, {
         "UserId": 166,
         "Badge": "569",
@@ -695,10 +789,6 @@ const users = [{
         "Badge": "572",
         "AgreementID": 6
     }, {
-        "UserId": 171,
-        "Badge": "550",
-        "AgreementID": 0
-    }, {
         "UserId": 172,
         "Badge": "574",
         "AgreementID": 6
@@ -707,53 +797,9 @@ const users = [{
         "Badge": "575",
         "AgreementID": 6
     }, {
-        "UserId": 174,
-        "Badge": "557",
-        "AgreementID": 0
-    }, {
-        "UserId": 175,
-        "Badge": "874",
-        "AgreementID": 0
-    }, {
-        "UserId": 176,
-        "Badge": "550",
-        "AgreementID": 0
-    }, {
-        "UserId": 177,
-        "Badge": "550",
-        "AgreementID": 0
-    }, {
         "UserId": 178,
         "Badge": "550",
         "AgreementID": 6
-    }, {
-        "UserId": 179,
-        "Badge": "545",
-        "AgreementID": 0
-    }, {
-        "UserId": 180,
-        "Badge": "573",
-        "AgreementID": 0
-    }, {
-        "UserId": 181,
-        "Badge": "557",
-        "AgreementID": 0
-    }, {
-        "UserId": 182,
-        "Badge": "396",
-        "AgreementID": 0
-    }, {
-        "UserId": 183,
-        "Badge": "445",
-        "AgreementID": 0
-    }, {
-        "UserId": 184,
-        "Badge": "459",
-        "AgreementID": 0
-    }, {
-        "UserId": 185,
-        "Badge": "561",
-        "AgreementID": 0
     }, {
         "UserId": 186,
         "Badge": "576",
@@ -763,41 +809,14 @@ const users = [{
         "Badge": "577",
         "AgreementID": 16
     }, {
-        "UserId": 188,
-        "Badge": "459",
-        "AgreementID": 0
-    }, {
-        "UserId": 189,
-        "Badge": "557",
-        "AgreementID": 0
-    }, {
         "UserId": 190,
         "Badge": "580",
         "AgreementID": 6
     }, {
-        "UserId": 191,
-        "Badge": "545",
-        "AgreementID": 0
-    }, {
+
         "UserId": 192,
         "Badge": "581",
         "AgreementID": 6
-    }, {
-        "UserId": 193,
-        "Badge": "569",
-        "AgreementID": 0
-    }, {
-        "UserId": 194,
-        "Badge": "545",
-        "AgreementID": 0
-    }, {
-        "UserId": 195,
-        "Badge": "136",
-        "AgreementID": 0
-    }, {
-        "UserId": 196,
-        "Badge": "843",
-        "AgreementID": 0
     }, {
         "UserId": 197,
         "Badge": "578",
@@ -806,9 +825,5 @@ const users = [{
         "UserId": 198,
         "Badge": "579",
         "AgreementID": 6
-    }, {
-        "UserId": 199,
-        "Badge": "545",
-        "AgreementID": 0
     }
-]
+];

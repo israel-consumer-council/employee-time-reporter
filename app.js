@@ -599,7 +599,7 @@
       minutesTotal = "0" + minutesTotal;
     return hoursTotal + ":" + minutesTotal;
   }
-
+  
   // Get how much hours a worker needs to work in a certain date
   function getTodayStandard(agreementID, currentDate) {
     let standardObj = getStandard(agreementID);
